@@ -4,9 +4,41 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 )
+
+var Numerics = map[string]string{
+	"one":   "one1one",
+	"two":   "two2two",
+	"three": "three3three",
+	"four":  "four4four",
+	"five":  "five5five",
+	"six":   "six6six",
+	"seven": "seven7seven",
+	"eight": "eight8eight",
+	"nine":  "nine9nine",
+}
+
+func matchStringToNumber(input string) string {
+	numeric := strings.TrimSpace(input)
+
+	keys := make([]string, 0, len(Numerics))
+
+	for k := range Numerics {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
+	for _, k := range keys {
+
+		numeric = strings.Replace(numeric, k, Numerics[k], len(input))
+
+	}
+
+	return numeric
+}
 
 func isNumeric(str string) bool {
 	return regexp.MustCompile(`\d`).MatchString(str)
@@ -21,12 +53,11 @@ func reverseArray(arr []string) []string {
 	return toRev
 }
 
-func findFirstNumeric(stringMap []string) string {
+func findFirstNumeric(strings []string) string {
 	var numberLike string
 out:
-	for i := 0; i < len(stringMap); i++ {
-		character := stringMap[i]
-
+	for i := 0; i < len(strings); i++ {
+		character := strings[i]
 		if isNumeric(character) {
 			numberLike = character
 			break out
@@ -48,10 +79,10 @@ func main() {
 
 	for i := 0; i < len(lines); i++ {
 
-		firstNumber := findFirstNumeric(strings.Split(lines[i], ""))
-		secondNumber := findFirstNumeric(reverseArray(strings.Split(lines[i], "")))
+		firstNumber, lastNumber := findFirstNumeric(strings.Split(matchStringToNumber(lines[i]), "")), findFirstNumeric(reverseArray(strings.Split(matchStringToNumber(lines[i]), "")))
 
-		sum, err := strconv.ParseInt(firstNumber+secondNumber, 10, 0)
+		fmt.Println(lines[i], firstNumber, lastNumber)
+		sum, err := strconv.ParseInt(firstNumber+lastNumber, 10, 64)
 
 		if err != nil {
 			fmt.Println("Failed to parse number", err)
