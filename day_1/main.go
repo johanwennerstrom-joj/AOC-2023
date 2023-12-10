@@ -67,7 +67,7 @@ out:
 }
 
 func main() {
-	data, err := os.ReadFile("data.txt")
+	data, err := os.ReadFile("input.txt")
 	if err != nil {
 		fmt.Println("Failed to read file", err)
 		return
