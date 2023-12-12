@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -37,6 +38,10 @@ func compareNumberSets(numbers []int, winningNumbers []int) []int {
 	return common
 }
 
+func calculatePoints(matches int) int {
+	return int(math.Pow(2, float64(matches-1)))
+}
+
 func main() {
 	data, err := os.ReadFile("input.txt")
 	if err != nil {
@@ -62,11 +67,4 @@ func main() {
 	}
 
 	fmt.Println(total)
-}
-
-func calculatePoints(matches int) int {
-	if matches == 0 {
-		return 0
-	}
-	return 1 << (matches - 1)
 }
