@@ -13,7 +13,7 @@ var gamePattern = regexp.MustCompile(`Game (\d+):`)
 var numberPattern = regexp.MustCompile(`(\d+)`)
 var colorPattern = regexp.MustCompile(`\s*([a-zA-Z]+)`)
 
-var MaxValues = map[string]int64{
+var MaxValues = map[string]int{
 	"red":   12,
 	"green": 13,
 	"blue":  14,
@@ -48,7 +48,7 @@ out:
 
 			number, color := numberPattern.FindString(item), colorPattern.FindString(item)
 
-			parsedNumber, err := strconv.ParseInt(strings.TrimSpace(number), 10, 64)
+			parsedNumber, err := strconv.Atoi(strings.TrimSpace(number))
 
 			if err != nil {
 				fmt.Println(err)
@@ -66,12 +66,12 @@ out:
 
 }
 
-func getPower(scoreString string) int64 {
+func getPower(scoreString string) int {
 
 	scoreString = strings.TrimSpace(scoreString)
 	rounds := strings.Split(scoreString, ";")
 
-	MaxGame := map[string]int64{
+	MaxGame := map[string]int{
 		"red":   0,
 		"green": 0,
 		"blue":  0,
@@ -85,7 +85,7 @@ func getPower(scoreString string) int64 {
 
 			number, color := numberPattern.FindString(item), colorPattern.FindString(item)
 
-			parsedNumber, err := strconv.ParseInt(strings.TrimSpace(number), 10, 64)
+			parsedNumber, err := strconv.Atoi(strings.TrimSpace(number))
 
 			if err != nil {
 				fmt.Println(err)
@@ -105,9 +105,9 @@ func getPower(scoreString string) int64 {
 
 }
 
-func part1and2(games []string) (int64, int64) {
+func part1and2(games []string) (int, int) {
 
-	var sum, totalPower int64
+	var sum, totalPower int
 
 	for _, game := range games {
 
@@ -115,7 +115,7 @@ func part1and2(games []string) (int64, int64) {
 		totalPower += getPower(clean)
 
 		if gamePossible(clean) {
-			parsedId, err := strconv.ParseInt(id, 10, 64)
+			parsedId, err := strconv.Atoi(id)
 			if err != nil {
 				fmt.Println("Failed to parse id")
 				continue
